@@ -1,0 +1,157 @@
+C:\FinalHaskell>java MicroHaskellInt < test1.hs
+Source Program
+--------------
+
+{-
+   test1.hs
+-}
+test1 = (12 * 3 + 5 ) + head(tail(3:5:[]))
+{-
+   end test1
+-}
+
+Syntax Tree for main program
+--------------------------------------------------
+(= test1 (+ (+ (* 12 3) 5) (head (tail (: 3 (: 5 []))))))
+
+
+Identifier table for main program
+--------------------------------
+
+Id    Category
+--    ---------
+test1 variable(46)
+
+Final Output
+-------------
+46
+
+C:\FinalHaskell>java MicroHaskellInt < test2.hs
+Source Program
+--------------
+
+{-
+   test2.hs
+-}
+test2 =
+  if (head(2:3:9:[]) /= ((12-3)/3)) then
+    ((tail(9:2:3:[]) == tail(8:2:3:[])) && (5 < 12) || ( 4 > head(9:7:[])))
+  else
+    (12 == 9)
+{-
+   end test2
+-}
+
+
+Syntax Tree for main program
+--------------------------------------------------
+(= test2 (if (/= (head (: 2 (: 3 (: 9 [])))) (/ (- 12 3) 3)) (then (|| (&& (== (
+tail (: 9 (: 2 (: 3 [])))) (tail (: 8 (: 2 (: 3 []))))) (< 5 12)) (> 4 (head (:
+9 (: 7 []))))) (else (== 12 9)))))
+
+
+Identifier table for main program
+--------------------------------
+
+Id    Category
+--    ---------
+test2 variable(true)
+
+Final Output
+-------------
+true
+
+C:\FinalHaskell>java MicroHaskellInt < test3.hs
+Source Program
+--------------
+
+{-
+   test3.hs
+-}
+test3 =
+  let
+    x = 4 + 3
+    y = 9 * 2 - 10
+    r = x:y:[]
+  in
+    head(r) + head(tail(r))
+{-
+   end test3
+-}
+
+
+
+Syntax Tree for main program
+--------------------------------------------------
+(= test3 (let-in (nil (nil (= x (+ 4 3)) (= y (- (* 9 2) 10))) (= r (: x (: y []
+)))) (+ (head r) (head (tail r)))))
+
+
+Identifier table for main program
+--------------------------------
+
+Id    Category
+--    ---------
+r     variable([7, 8])
+test3 variable(15)
+x     variable(7)
+y     variable(8)
+
+Final Output
+-------------
+15
+
+C:\FinalHaskell>java MicroHaskellInt < test4.hs
+Source Program
+--------------
+
+{-
+   test4.hs
+-}
+test4 =
+  let
+    x = 5
+    y = 6
+  in
+    let
+      x = 6
+      z = 7
+    in
+      let f x = x + y + z
+      in f 2
+{-
+   end test4
+-}
+
+
+Syntax Tree for main program
+--------------------------------------------------
+(= test4 (let-in (nil (= x 5) (= y 6)) (let-in (nil (= x 6) (= z 7)) (let-in (f
+x (+ (+ x y) z)) (nil f 2)))))
+
+
+Identifier table for main program
+--------------------------------
+
+Id    Category
+--    ---------
+f     function(Function@7e7ee46a)
+test4 variable(15)
+x     variable(6)
+y     variable(6)
+z     variable(7)
+
+Syntax Tree for f
+---------------------------------------
+(+ (+ x y) z)
+
+Identifier table for f
+---------------------
+
+Id Category
+-- ---------
+x  variable(2)
+
+Final Output
+-------------
+15
